@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html>
+ <head>
+  <meta charset="utf-8">
+  <title>Choose TZ</title>
+ </head>
+ <body>
+
+  <form method="post" action="/result">
+	<p><b>Choose TimeZone</b></p>
+		{{range $ind, $val := .Locations}}
+   <p>
+   <input type="checkbox" name="{{$ind}}" value="{{$val}}">{{$val}}<Br>
+   </p>
+		{{end}}
+   <p><input type="submit" value="Отправить"></p>
+  </form>
+
+ </body>
+</html>

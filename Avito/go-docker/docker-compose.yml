@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  web:
+    image: go-docker
+    ports:
+      - "8080"
+    depends_on:
+      - database
+
+  database:
+    image: mysql
+    ports:
+      - "3305"
+    environment:
+      - MYSQL_ROOT_PASSWORD=UsePerl_1234
+      - MYSQL_USER=yudintsev
+      - MYSQL_DATABASE=avito
+    volumes:
+      - /data:/var/lib/mysql

@@ -1,1 +1,0 @@
-#### http://bulk.openweathermap.org/sample/

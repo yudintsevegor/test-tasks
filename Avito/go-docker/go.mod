@@ -7,3 +7,5 @@ require (
 	github.com/xeipuuv/gojsonschema v1.1.0
 	google.golang.org/appengine v1.5.0
 )
+
+go 1.13

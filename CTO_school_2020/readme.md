@@ -1,3 +1,5 @@
+## NOTE: see this [repository](https://github.com/yudintsevegor/wheather_informer), please. i took a mistake
+
 # [Умный сервис прогноза погоды (Задача со звездочкой)](https://www.notion.so/03f6716315e04acea3023766e5f2cc0e)
 
 ## Architecture

@@ -1,11 +1,11 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"log"
 	"net/http"
 	"strings"
+	"sync"
 
 	"weather_informer/config"
 
@@ -13,23 +13,24 @@ import (
 )
 
 type weatherInformer struct {
-	bot             *tgbotapi.BotAPI
-	apiKey          string
-	locations       map[string]coordinate
-	supportedCities []string
+	bot                *tgbotapi.BotAPI
+	apiKey             string
+	locations          map[string]coordinates
+	supportedLocations []string
 
 	url     string
+	mu      sync.Mutex
 	isDebug bool
 }
 
 func newWeatherInformer(
-	bot *tgbotapi.BotAPI, cfg *config.Config, locations map[string]coordinate, supportedCities []string,
+	bot *tgbotapi.BotAPI, cfg *config.Config, locations map[string]coordinates, supportedLocations []string,
 ) weatherInformer {
 	return weatherInformer{
-		bot:             bot,
-		apiKey:          cfg.WeatherKeyAPI,
-		locations:       locations,
-		supportedCities: supportedCities,
+		bot:                bot,
+		apiKey:             cfg.WeatherKeyAPI,
+		locations:          locations,
+		supportedLocations: supportedLocations,
 
 		url:     cfg.WebHook,
 		isDebug: cfg.IsDebug,
@@ -39,9 +40,9 @@ func newWeatherInformer(
 func (w weatherInformer) handleSupportedLocations(wr http.ResponseWriter, req *http.Request) {
 	text := fmt.Sprintf(
 		"Supported locations: %v\nFormat: Country-City [for countries with state format is Country-State-City]\n",
-		len(w.supportedCities))
+		len(w.supportedLocations))
 
-	_, _ = wr.Write([]byte(text + strings.Join(w.supportedCities, "\n")))
+	_, _ = wr.Write([]byte(text + strings.Join(w.supportedLocations, "\n")))
 }
 
 const (
@@ -49,7 +50,7 @@ const (
 	helloMessage = `
 	Hello,
 	i am a weather bot. You can send me a location in format country-city
-	[or country-state-city for countries with states [ex: us]].
+	[or country-state-city for countries with states (ex: us)].
 	And i send to you a current weather, hourly weather for the next 12 hours
 	and recommendation!
 
@@ -89,11 +90,11 @@ const hoursInHalfDay = 12
 var isCurrentWeatherDay = true
 
 func (w weatherInformer) handleMessage(message *tgbotapi.Message) (string, error) {
-	coordinate, ok := w.locations[strings.ToLower(message.Text)]
-	if !ok {
-		text := fmt.Sprintf(`unknown location: '%v'; use list '%v'`, message.Text, w.url+cityList)
+	coordinate, err := w.getCoordinates(message.Text)
+	if err != nil {
+		text := fmt.Sprintf(`unknown location: '%v'; use list '%v'`, message.Text, w.url+locationList)
 
-		return text, errors.New("unknown location")
+		return text, err
 	}
 
 	response, err := w.getWeatherByAPI(w.apiKey, coordinate)

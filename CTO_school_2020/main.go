@@ -9,13 +9,13 @@ import (
 )
 
 const (
-	cityList   = "/cities"
-	citiesPath = "./city_list/city.list.json"
-	configPath = "./config/config.env"
+	locationList = "/locations"
+	citiesPath   = "./city_list/city.list.json"
+	configPath   = "./config/config.env"
 )
 
 func main() {
-	locations, supportedCities, err := createLocations(citiesPath)
+	locations, supportedLocations, err := createLocations(citiesPath)
 	if err != nil {
 		log.Fatalf("create locations: path: %v; err: %v", citiesPath, err)
 	}
@@ -30,10 +30,10 @@ func main() {
 		log.Fatalf("bot createon: %v", err)
 	}
 
-	weatherInformer := newWeatherInformer(bot, cfg, locations, supportedCities)
+	weatherInformer := newWeatherInformer(bot, cfg, locations, supportedLocations)
 	go weatherInformer.startBot()
 
-	http.HandleFunc(cityList, weatherInformer.handleSupportedLocations)
+	http.HandleFunc(locationList, weatherInformer.handleSupportedLocations)
 
 	port := os.Getenv("PORT")
 

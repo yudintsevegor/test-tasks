@@ -6,7 +6,7 @@
 
 ### Language and tools
 * [Go](https://golang.org/)
-* [Wrapper for Tg-Bo-API]("gopkg.in/telegram-bot-api.v4")
+* [Wrapper for Tg-Bot-API](gopkg.in/telegram-bot-api.v4)
 * [heroku](https://dashboard.heroku.com/) for  deployment
 
 ### UI
@@ -14,15 +14,13 @@ You can use telegram-bot by [url](t.me/informer_weather_bot) or find it by `@inf
 
 ### Request to Bot
 
-Request to the bot consist of the one string in format:
+Request to the bot consist of one string in format:
 ```
     Country-City or Country-State-City
 ```
 
 Country format: iso-2-alpha
-
 State format: two letters
-
 City format: full name of the city
 
 Example:
@@ -134,7 +132,11 @@ I use [samples](http://bulk.openweathermap.org/sample/) for getting information 
     make all
 ````
 
-NOTE: if you want use telegram-bot, ypu need set VPN or user cloud service for deployment
 ### Example
 
 You can watch a video with usage [video](https://cloud.mail.ru/public/3rVy/2SyNqqFMd)
+
+### TODO
+
+* Add database for dialog with user
+* Add opportunity to ask only current weather/hourly weather for period/etc

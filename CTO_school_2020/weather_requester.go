@@ -13,7 +13,7 @@ import (
 // https://openweathermap.org/api/one-call-api
 const urlSchema = "https://api.openweathermap.org/data/2.5/onecall?lat=%v&lon=%v&appid=%v&units=metric"
 
-func (w weatherInformer) getWeatherByAPI(apiKey string, coordinate coordinate) (*response, error) {
+func (w weatherInformer) getWeatherByAPI(apiKey string, coordinate coordinates) (*response, error) {
 	reqUrl := fmt.Sprintf(urlSchema, coordinate.Latitude, coordinate.Longitude, apiKey)
 	if w.isDebug {
 		log.Printf("reqURL: %s", reqUrl)
@@ -53,7 +53,7 @@ func doRequest(url string) ([]byte, error) {
 const layout = "January 2, 15:04 MST"
 
 const textWeather = `
-	Time: %v
+	DateTime: %v
 
 	Weather: %v
 	Temperature: %v °C,

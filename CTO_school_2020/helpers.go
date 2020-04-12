@@ -14,18 +14,18 @@ import (
 )
 
 type location struct {
-	City       string     `json:"name"`
-	Country    string     `json:"country"`
-	State      string     `json:"state"`
-	Coordinate coordinate `json:"coord"`
+	City       string      `json:"name"`
+	Country    string      `json:"country"`
+	State      string      `json:"state"`
+	Coordinate coordinates `json:"coord"`
 }
 
-type coordinate struct {
+type coordinates struct {
 	Longitude float64 `json:"lon"`
 	Latitude  float64 `json:"lat"`
 }
 
-func createLocations(path string) (map[string]coordinate, []string, error) {
+func createLocations(path string) (map[string]coordinates, []string, error) {
 	body, err := ioutil.ReadFile(path)
 	if err != nil {
 		return nil, nil, errors.New("read path")
@@ -37,7 +37,7 @@ func createLocations(path string) (map[string]coordinate, []string, error) {
 	}
 
 	var (
-		cityCoordinate  = make(map[string]coordinate)
+		cityCoordinate  = make(map[string]coordinates)
 		supportedCities = make([]string, 0, len(locations))
 	)
 
@@ -67,6 +67,18 @@ func createBot(cfg *config.Config) (*tgbotapi.BotAPI, error) {
 	log.Printf("Authorized on account %s\n", bot.Self.UserName)
 
 	return bot, nil
+}
+
+func (w weatherInformer) getCoordinates(text string) (coordinates, error) {
+	w.mu.Lock()
+	defer w.mu.Unlock()
+
+	coordinate, ok := w.locations[strings.ToLower(text)]
+	if !ok {
+		return coordinates{}, errors.New("unknown location")
+	}
+
+	return coordinate, nil
 }
 
 func createRecommendations(weatherInfo map[WeatherType]struct{}) string {

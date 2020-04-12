@@ -12,13 +12,15 @@ You can use telegram-bot by [url](t.me/informer_weather_bot) or find it by `@inf
 
 ### Request to Bot
 
-Request to the bot consist of one string in format:
+Request to the bot consist of the one string in format:
 ```
     Country-City or Country-State-City
 ```
 
 Country format: iso-2-alpha
+
 State format: two letters
+
 City format: full name of the city
 
 Example:

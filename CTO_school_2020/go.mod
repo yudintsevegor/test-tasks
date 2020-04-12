@@ -1,4 +1,4 @@
-module not-for-work/test-tasks/CTO_school_2020
+module weather_bot
 
 go 1.13
 

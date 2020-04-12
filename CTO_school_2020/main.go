@@ -1,4 +1,4 @@
-package main
+package main // import "weather_bot"
 
 import (
 	"log"

@@ -10,7 +10,7 @@
 * [heroku](https://dashboard.heroku.com/) for  deployment
 
 ### UI
-You can use telegram-bot by [url](t.me/informer_weather_bot) or find it by `@informer_weather_bot`
+You can use telegram-bot by [url](https://t.me/informer_weather_bot) or find it by `@informer_weather_bot`
 
 ### Request to Bot
 
